@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariadne SI | Sovereign Intelligence</title>
+<meta name="description" content="Ariadne Sovereign Intelligence â advanced algorithmic systems for market navigation, wealth intelligence, and autonomous operations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy-deepest: #050a12;
+  --navy-deep: #0a1628;
+  --navy-mid: #0f1e38;
+  --navy-light: #162a4a;
+  --gold-primary: #c8a84e;
+  --gold-light: #dcc06a;
+  --gold-bright: #f0d078;
+  --gold-dim: #8a7234;
+  --text-primary: #e8e4dc;
+  --text-secondary: #a09888;
+  --text-muted: #6a6054;
+  --accent-teal: #4ecdc4;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--navy-deepest);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.fade-up { opacity:0; transform:translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ââ Navigation âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(5,10,18,0.88); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(200,168,78,0.08);
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.nav-logo { width: 40px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(200,168,78,0.2)); }
+.nav-wordmark { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.1em; color: var(--gold-primary); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-decoration: none; transition: color 0.3s; }
+.nav-links a:hover { color: var(--gold-primary); }
+.nav-cta { font-size: 0.78rem !important; font-weight: 600 !important; color: var(--navy-deep) !important; background: var(--gold-primary); padding: 8px 22px; border-radius: 4px; transition: all 0.3s !important; }
+.nav-cta:hover { background: var(--gold-light) !important; }
+
+/* ââ Hero âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; padding: 120px 40px 80px;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 800px 600px at 30% 40%, rgba(200,168,78,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(78,205,196,0.02) 0%, transparent 70%),
+    var(--navy-deepest);
+}
+.hero-bg::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(200,168,78,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,168,78,0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+.hero-logo-main { width: 200px; height: auto; margin: 0 auto 48px; animation: float 6s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(200,168,78,0.15)); }
+.hero-title {
+  font-family: var(--font-display); font-size: 4.5rem; font-weight: 300;
+  letter-spacing: 0.14em; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold-primary), var(--gold-bright), var(--gold-primary));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: shimmer 8s linear infinite;
+}
+.hero-subtitle { font-family: var(--font-display); font-size: 1.4rem; font-weight: 300; font-style: italic; color: var(--text-secondary); letter-spacing: 0.08em; margin-bottom: 48px; }
+.hero-line { font-size: 1rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.8; }
+
+/* ââ Divider ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.divider { width: 50px; height: 1px; margin: 0 auto; background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); }
+
+/* ââ Sections âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+section { padding: 100px 40px; }
+.section-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
+.section-heading { font-family: var(--font-display); font-size: 2.6rem; font-weight: 400; color: var(--text-primary); margin-bottom: 20px; }
+.section-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.85; max-width: 640px; }
+
+/* ââ About ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.about-section { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.about-visual { background: var(--navy-deep); border: 1px solid rgba(200,168,78,0.1); border-radius: 12px; padding: 48px; text-align: center; }
+.about-visual img { width: 220px; height: auto; filter: drop-shadow(0 0 20px rgba(200,168,78,0.12)); }
+
+/* ââ Capabilities âââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.cap-section { max-width: 1100px; margin: 0 auto; text-align: center; }
+.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+.cap-card { background: rgba(15,30,56,0.35); border: 1px solid rgba(200,168,78,0.06); border-radius: 10px; padding: 36px 28px; text-align: left; transition: all 0.4s; }
+.cap-card:hover { border-color: rgba(200,168,78,0.2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.cap-icon { font-size: 1.6rem; margin-bottom: 16px; }
+.cap-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+.cap-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ââ Approach âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.approach-section { max-width: 900px; margin: 0 auto; text-align: center; }
+.approach-cards { display: flex; justify-content: center; gap: 32px; margin-top: 56px; }
+.approach-card { flex: 1; max-width: 260px; padding: 32px 24px; border-radius: 10px; border: 1px solid; text-align: center; }
+.approach-a { border-color: rgba(78,205,196,0.25); background: rgba(78,205,196,0.04); }
+.approach-b { border-color: rgba(200,168,78,0.25); background: rgba(200,168,78,0.04); }
+.approach-c { border-color: rgba(232,93,93,0.2); background: rgba(232,93,93,0.03); }
+.approach-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; margin-bottom: 8px; }
+.approach-a .approach-label { color: var(--accent-teal); }
+.approach-b .approach-label { color: var(--gold-primary); }
+.approach-c .approach-label { color: #e85d5d; }
+.approach-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-primary); margin-bottom: 8px; }
+.approach-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ââ Sienna âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.sienna-section { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.sienna-portrait { width: 100%; max-width: 380px; border-radius: 16px; border: 2px solid rgba(200,168,78,0.12); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+
+/* ââ Footer âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); text-align: center; }
+.footer-logo { width: 50px; height: auto; margin-bottom: 16px; opacity: 0.4; }
+.footer-text { font-size: 0.78rem; color: var(--text-muted); }
+.footer-links { margin-top: 10px; }
+.footer-links a { font-size: 0.72rem; color: var(--text-muted); text-decoration: none; margin: 0 14px; transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold-primary); }
+
+@media (max-width: 900px) {
+  .hero-title { font-size: 3rem; }
+  .about-section, .sienna-section { grid-template-columns: 1fr; }
+  .cap-grid { grid-template-columns: 1fr; }
+  .approach-cards { flex-direction: column; align-items: center; }
+  nav { padding: 12px 20px; }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .hero-title { font-size: 2.2rem; letter-spacing: 0.06em; }
+  .hero-logo-main { width: 140px; }
+  section { padding: 60px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-brand">
+    <img src="assets/ariadne-cameo.png" alt="Ariadne" class="nav-logo" onerror="this.style.display='none'">
+    <span class="nav-wordmark">ARIADNE</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#approach">Approach</a>
+    <a href="#sienna">Sienna</a>
+    <a href="#contact" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <img src="assets/ariadne-cameo.png" alt="Ariadne Sovereign Intelligence" class="hero-logo-main" onerror="this.style.display='none'">
+    <h1 class="hero-title">ARIADNE</h1>
+    <p class="hero-subtitle">Sovereign Intelligence</p>
+    <p class="hero-line">Algorithmic systems that navigate market complexity, build wealth intelligently, and operate with full autonomy.</p>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="about-section">
+    <div>
+      <div class="section-label fade-up">About</div>
+      <h2 class="section-heading fade-up">The thread through<br>the labyrinth.</h2>
+      <div class="section-body fade-up">
+        <p>In Greek mythology, Ariadne gave Theseus the thread that guided him safely through the labyrinth. Today, Ariadne provides the same clarity through financial complexity.</p>
+        <br>
+        <p>We build intelligent systems that understand market conditions in real time, adapt autonomously, and execute with precision â so you don't have to.</p>
+      </div>
+    </div>
+    <div class="about-visual fade-up">
+      <img src="assets/ariadne-monogram.png" alt="AS" onerror="this.parentElement.innerHTML='<div style=&quot;font-family:Cormorant Garamond,serif;font-size:5.5rem;color:#c8a84e;font-weight:600&quot;>AS</div><p style=&quot;font-family:JetBrains Mono;font-size:0.65rem;color:#6a6054;margin-top:12px;letter-spacing:0.15em&quot;>ARIADNE SOVEREIGN INTELLIGENCE</p>'">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Capabilities -->
+<section id="capabilities">
+  <div class="cap-section">
+    <div class="section-label">What We Build</div>
+    <h2 class="section-heading">Intelligent systems, end to end.</h2>
+
+    <div class="cap-grid">
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x1F9ED;</div>
+        <div class="cap-title">Market Intelligence</div>
+        <div class="cap-desc">Proprietary systems that read market conditions and adapt in real time. Multiple strategies coordinated through a unified decision framework.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x2699;&#xFE0F;</div>
+        <div class="cap-title">Autonomous Operations</div>
+        <div class="cap-desc">Fully automated daily workflows â from morning preparation through market hours to end-of-day analysis. Human oversight without human bottlenecks.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x1F4CA;</div>
+        <div class="cap-title">Data Fusion</div>
+        <div class="cap-desc">Dozens of independent data streams synthesized into actionable intelligence. Alternative data, macro indicators, and proprietary signals woven together.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x1F3E0;</div>
+        <div class="cap-title">Wealth Infrastructure</div>
+        <div class="cap-desc">Real estate intelligence, funding discovery, banking integration, and financial planning tools â all connected to a unified wealth picture.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x1F6E1;&#xFE0F;</div>
+        <div class="cap-title">Family Protection</div>
+        <div class="cap-desc">Estate planning, trust structures, insurance optimization, credit intelligence, and governance frameworks designed for multi-generational wealth preservation.</div>
+      </div>
+      <div class="cap-card fade-up">
+        <div class="cap-icon">&#x1F310;</div>
+        <div class="cap-title">Distribution & Commerce</div>
+        <div class="cap-desc">Multi-channel content distribution, opportunity scoring, pipeline management, and platform integrations for building revenue at scale.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Approach -->
+<section id="approach">
+  <div class="approach-section">
+    <div class="section-label">Our Approach</div>
+    <h2 class="section-heading">Adapt. Don't predict.</h2>
+    <div class="section-body" style="margin:0 auto;">
+      <p>Markets are a labyrinth â constantly shifting, full of false turns. Ariadne doesn't try to predict the future. It classifies the present with extreme precision and adapts every decision accordingly.</p>
+    </div>
+
+    <div class="approach-cards">
+      <div class="approach-card approach-a fade-up">
+        <div class="approach-label">FAVORABLE</div>
+        <div class="approach-title">Expand</div>
+        <div class="approach-desc">When conditions align, deploy with conviction. The system allocates aggressively within risk parameters.</div>
+      </div>
+      <div class="approach-card approach-b fade-up">
+        <div class="approach-label">UNCERTAIN</div>
+        <div class="approach-title">Navigate</div>
+        <div class="approach-desc">When signals conflict, deploy selectively. The system reduces exposure and favors market-neutral approaches.</div>
+      </div>
+      <div class="approach-card approach-c fade-up">
+        <div class="approach-label">ADVERSE</div>
+        <div class="approach-title">Protect</div>
+        <div class="approach-desc">When conditions deteriorate, preserve capital. The system pauses directional activity and activates defensive postures.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Sienna -->
+<section id="sienna">
+  <div class="sienna-section">
+    <div>
+      <div class="section-label fade-up">Meet Sienna</div>
+      <h2 class="section-heading fade-up">Intelligence with memory.</h2>
+      <div class="section-body fade-up">
+        <p>Sienna is the intelligence layer that ties everything together. She observes every data point, remembers what worked and what didn't, and surfaces insights that would take a human analyst hours to uncover.</p>
+        <br>
+        <p>Think of her as a chief of staff who never sleeps, never forgets, and always has the right context ready â before you ask for it.</p>
+      </div>
+    </div>
+    <div class="fade-up" style="text-align:center;">
+      <img src="assets/sienna-portrait.png" alt="Sienna" class="sienna-portrait" onerror="this.style.display='none'">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Contact -->
+<section id="contact" style="text-align:center;">
+  <div class="section-label">Contact</div>
+  <h2 class="section-heading">Let's talk.</h2>
+  <p class="section-body" style="margin:0 auto 32px;">Whether you're interested in our technology, exploring a partnership, or just want to learn more â we'd like to hear from you.</p>
+  <a href="mailto:chris@ariadnesi.org" style="display:inline-block; padding:14px 40px; background:var(--gold-primary); color:var(--navy-deep); font-weight:600; font-size:0.88rem; letter-spacing:0.06em; border-radius:5px; text-decoration:none; transition:all 0.3s;">chris@ariadnesi.org</a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <img src="assets/ariadne-cameo.png" alt="" class="footer-logo" onerror="this.style.display='none'">
+  <p class="footer-text">&copy; 2026 Ariadne Sovereign Intelligence. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://ariadnesi.org">AriadneSI.org</a>
+    <a href="https://github.com/ariadnesi">GitHub</a>
+    <a href="mailto:info@ariadnesi.org">info@ariadnesi.org</a>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+});
+</script>
+</body>
+</html>
