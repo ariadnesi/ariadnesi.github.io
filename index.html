@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ariadne SI | Sovereign Intelligence</title>
-<meta name="description" content="Ariadne Sovereign Intelligence â advanced algorithmic systems for market navigation, wealth intelligence, and autonomous operations.">
+<meta name="description" content="Ariadne Sovereign Intelligence &mdash; advanced algorithmic systems for market navigation, wealth intelligence, and autonomous operations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -104,9 +104,7 @@ section { padding: 100px 40px; }
 .section-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.85; max-width: 640px; }
 
 /* ââ About ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.about-section { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.about-visual { background: var(--navy-deep); border: 1px solid rgba(200,168,78,0.1); border-radius: 12px; padding: 48px; text-align: center; }
-.about-visual img { width: 220px; height: auto; filter: drop-shadow(0 0 20px rgba(200,168,78,0.12)); }
+.about-section { max-width: 720px; margin: 0 auto; text-align: center; }
 
 /* ââ Capabilities âââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .cap-section { max-width: 1100px; margin: 0 auto; text-align: center; }
@@ -132,7 +130,7 @@ section { padding: 100px 40px; }
 .approach-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
 
 /* ââ Sienna âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.sienna-section { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.sienna-section { max-width: 720px; margin: 0 auto; text-align: center; }
 .sienna-portrait { width: 100%; max-width: 380px; border-radius: 16px; border: 2px solid rgba(200,168,78,0.12); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
 
 /* ââ Footer âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
@@ -145,7 +143,7 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
 
 @media (max-width: 900px) {
   .hero-title { font-size: 3rem; }
-  .about-section, .sienna-section { grid-template-columns: 1fr; }
+  .about-section, .sienna-section { max-width: 100%; }
   .cap-grid { grid-template-columns: 1fr; }
   .approach-cards { flex-direction: column; align-items: center; }
   nav { padding: 12px 20px; }
@@ -189,17 +187,12 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
 <!-- About -->
 <section id="about">
   <div class="about-section">
-    <div>
-      <div class="section-label fade-up">About</div>
-      <h2 class="section-heading fade-up">The thread through<br>the labyrinth.</h2>
-      <div class="section-body fade-up">
-        <p>In Greek mythology, Ariadne gave Theseus the thread that guided him safely through the labyrinth. Today, Ariadne provides the same clarity through financial complexity.</p>
-        <br>
-        <p>We build intelligent systems that understand market conditions in real time, adapt autonomously, and execute with precision â so you don't have to.</p>
-      </div>
-    </div>
-    <div class="about-visual fade-up">
-      <img src="assets/ariadne-monogram.png" alt="AS" onerror="this.parentElement.innerHTML='<div style=&quot;font-family:Cormorant Garamond,serif;font-size:5.5rem;color:#c8a84e;font-weight:600&quot;>AS</div><p style=&quot;font-family:JetBrains Mono;font-size:0.65rem;color:#6a6054;margin-top:12px;letter-spacing:0.15em&quot;>ARIADNE SOVEREIGN INTELLIGENCE</p>'">
+    <div class="section-label fade-up">About</div>
+    <h2 class="section-heading fade-up">The thread through<br>the labyrinth.</h2>
+    <div class="section-body fade-up" style="margin:0 auto;">
+      <p>In Greek mythology, Ariadne gave Theseus the thread that guided him safely through the labyrinth. Today, Ariadne provides the same clarity through financial complexity.</p>
+      <br>
+      <p>We build intelligent systems that understand market conditions in real time, adapt autonomously, and execute with precision &mdash; so you don&rsquo;t have to.</p>
     </div>
   </div>
 </section>
@@ -221,7 +214,7 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
       <div class="cap-card fade-up">
         <div class="cap-icon">&#x2699;&#xFE0F;</div>
         <div class="cap-title">Autonomous Operations</div>
-        <div class="cap-desc">Fully automated daily workflows â from morning preparation through market hours to end-of-day analysis. Human oversight without human bottlenecks.</div>
+        <div class="cap-desc">Fully automated daily workflows &mdash; from morning preparation through market hours to end-of-day analysis. Human oversight without human bottlenecks.</div>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-icon">&#x1F4CA;</div>
@@ -231,7 +224,7 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
       <div class="cap-card fade-up">
         <div class="cap-icon">&#x1F3E0;</div>
         <div class="cap-title">Wealth Infrastructure</div>
-        <div class="cap-desc">Real estate intelligence, funding discovery, banking integration, and financial planning tools â all connected to a unified wealth picture.</div>
+        <div class="cap-desc">Real estate intelligence, funding discovery, banking integration, and financial planning tools &mdash; all connected to a unified wealth picture.</div>
       </div>
       <div class="cap-card fade-up">
         <div class="cap-icon">&#x1F6E1;&#xFE0F;</div>
@@ -255,7 +248,7 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
     <div class="section-label">Our Approach</div>
     <h2 class="section-heading">Adapt. Don't predict.</h2>
     <div class="section-body" style="margin:0 auto;">
-      <p>Markets are a labyrinth â constantly shifting, full of false turns. Ariadne doesn't try to predict the future. It classifies the present with extreme precision and adapts every decision accordingly.</p>
+      <p>Markets are a labyrinth &mdash; constantly shifting, full of false turns. Ariadne doesn&rsquo;t try to predict the future. It classifies the present with extreme precision and adapts every decision accordingly.</p>
     </div>
 
     <div class="approach-cards">
@@ -283,16 +276,14 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
 <!-- Sienna -->
 <section id="sienna">
   <div class="sienna-section">
-    <div>
-      <div class="section-label fade-up">Meet Sienna</div>
-      <h2 class="section-heading fade-up">Intelligence with memory.</h2>
-      <div class="section-body fade-up">
-        <p>Sienna is the intelligence layer that ties everything together. She observes every data point, remembers what worked and what didn't, and surfaces insights that would take a human analyst hours to uncover.</p>
-        <br>
-        <p>Think of her as a chief of staff who never sleeps, never forgets, and always has the right context ready â before you ask for it.</p>
-      </div>
+    <div class="section-label fade-up">Meet Sienna</div>
+    <h2 class="section-heading fade-up">Intelligence with memory.</h2>
+    <div class="section-body fade-up" style="margin:0 auto;">
+      <p>Sienna is the intelligence layer that ties everything together. She observes every data point, remembers what worked and what didn&rsquo;t, and surfaces insights that would take a human analyst hours to uncover.</p>
+      <br>
+      <p>Think of her as a chief of staff who never sleeps, never forgets, and always has the right context ready &mdash; before you ask for it.</p>
     </div>
-    <div class="fade-up" style="text-align:center;">
+    <div class="fade-up" style="margin-top:40px;">
       <img src="assets/sienna-portrait.png" alt="Sienna" class="sienna-portrait" onerror="this.style.display='none'">
     </div>
   </div>
@@ -304,7 +295,7 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
 <section id="contact" style="text-align:center;">
   <div class="section-label">Contact</div>
   <h2 class="section-heading">Let's talk.</h2>
-  <p class="section-body" style="margin:0 auto 32px;">Whether you're interested in our technology, exploring a partnership, or just want to learn more â we'd like to hear from you.</p>
+  <p class="section-body" style="margin:0 auto 32px;">Whether you&rsquo;re interested in our technology, exploring a partnership, or just want to learn more &mdash; we&rsquo;d like to hear from you.</p>
   <a href="mailto:chris@ariadnesi.org" style="display:inline-block; padding:14px 40px; background:var(--gold-primary); color:var(--navy-deep); font-weight:600; font-size:0.88rem; letter-spacing:0.06em; border-radius:5px; text-decoration:none; transition:all 0.3s;">chris@ariadnesi.org</a>
 </section>
 
