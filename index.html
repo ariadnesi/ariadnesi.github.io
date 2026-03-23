@@ -3,25 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ariadne SI | Sovereign Intelligence</title>
-<meta name="description" content="Ariadne Sovereign Intelligence &mdash; advanced algorithmic systems for market navigation, wealth intelligence, and autonomous operations.">
+<title>Ariadne &mdash; Sovereign Intelligence</title>
+<meta name="description" content="Ariadne Sovereign Intelligence &mdash; algorithmic systems that navigate market complexity, build wealth intelligently, and operate with full autonomy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy-deepest: #050a12;
-  --navy-deep: #0a1628;
-  --navy-mid: #0f1e38;
-  --navy-light: #162a4a;
-  --gold-primary: #c8a84e;
-  --gold-light: #dcc06a;
-  --gold-bright: #f0d078;
-  --gold-dim: #8a7234;
-  --text-primary: #e8e4dc;
-  --text-secondary: #a09888;
-  --text-muted: #6a6054;
-  --accent-teal: #4ecdc4;
+  --black: #030303;
+  --black-warm: #0a0908;
+  --surface: #0d0c0a;
+  --surface-elevated: #151310;
+  --gold-dim: #6b5a2e;
+  --gold: #c8a84e;
+  --gold-light: #e8d080;
+  --gold-bright: #f5e4a0;
+  --teal: #4ecdc4;
+  --teal-dim: rgba(78,205,196,0.15);
+  --text: #e8e4dc;
+  --text-secondary: #908878;
+  --text-muted: #585048;
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -29,279 +30,709 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
 body {
   font-family: var(--font-body);
-  background: var(--navy-deepest);
-  color: var(--text-primary);
-  line-height: 1.7;
+  background: var(--black);
+  color: var(--text);
   overflow-x: hidden;
+  cursor: none;
 }
 
-@keyframes fadeUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+/* ââ Custom Cursor ââââââââââââââââââââââââââââââââââââââââ */
+.cursor {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none; mix-blend-mode: difference;
+}
+.cursor-dot {
+  width: 8px; height: 8px; background: var(--gold-light);
+  border-radius: 50%; transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.3s;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9998;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(200,168,78,0.3);
+  border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+body:hover .cursor-dot { background: var(--gold-bright); }
+
+/* ââ Canvas Layer âââââââââââââââââââââââââââââââââââââââââ */
+#threadCanvas {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0; pointer-events: none;
+}
+
+/* ââ Intro Sequence ââââââââââââââââââââââââââââââââââââââ" */
+.intro-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.intro-overlay.done { opacity: 0; pointer-events: none; }
+.intro-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 6rem);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: transparent;
+  background: linear-gradient(135deg, var(--gold-dim), var(--gold), var(--gold-bright), var(--gold));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 1s ease 0.3s, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+.intro-text.visible { opacity: 1; transform: scale(1); }
+.intro-subtitle {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 0.8s ease 1s;
+}
+.intro-subtitle.visible { opacity: 1; }
+
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
-@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-.fade-up { opacity:0; transform:translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fade-up.visible { opacity:1; transform:translateY(0); }
-
-/* ââ Navigation âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ââ Navigation âââââââââââââââââââââââââââââââââââââââââââ */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(5,10,18,0.88); backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(200,168,78,0.08);
-  padding: 16px 40px;
+  padding: 24px 40px;
   display: flex; align-items: center; justify-content: space-between;
+  opacity: 0; transform: translateY(-20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-.nav-logo { width: 40px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(200,168,78,0.2)); }
-.nav-wordmark { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.1em; color: var(--gold-primary); }
+nav.visible { opacity: 1; transform: translateY(0); }
+.nav-mark {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-decoration: none;
+}
 .nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em; color: var(--text-secondary); text-decoration: none; transition: color 0.3s; }
-.nav-links a:hover { color: var(--gold-primary); }
-.nav-cta { font-size: 0.78rem !important; font-weight: 600 !important; color: var(--navy-deep) !important; background: var(--gold-primary); padding: 8px 22px; border-radius: 4px; transition: all 0.3s !important; }
-.nav-cta:hover { background: var(--gold-light) !important; }
+.nav-links a {
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.4s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: -4px; left: 0; width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
 
-/* ââ Hero âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ââ Sections Base ââââââââââââââââââââââââââââââââââââââââ */
+section { position: relative; z-index: 1; }
+
+/* ââ Hero ââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .hero {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden; padding: 120px 40px 80px;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 120px 40px 100px;
+  position: relative;
 }
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 800px 600px at 30% 40%, rgba(200,168,78,0.05) 0%, transparent 70%),
-    radial-gradient(ellipse 500px 400px at 70% 60%, rgba(78,205,196,0.02) 0%, transparent 70%),
-    var(--navy-deepest);
-}
-.hero-bg::before {
-  content: ''; position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(200,168,78,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,168,78,0.02) 1px, transparent 1px);
-  background-size: 80px 80px;
-}
-.hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
-.hero-logo-main { width: 200px; height: auto; margin: 0 auto 48px; animation: float 6s ease-in-out infinite; filter: drop-shadow(0 0 30px rgba(200,168,78,0.15)); }
 .hero-title {
-  font-family: var(--font-display); font-size: 4.5rem; font-weight: 300;
-  letter-spacing: 0.14em; margin-bottom: 12px;
-  background: linear-gradient(135deg, var(--gold-dim), var(--gold-primary), var(--gold-bright), var(--gold-primary));
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  line-height: 0.9;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(135deg, var(--gold-dim) 0%, var(--gold) 30%, var(--gold-bright) 50%, var(--gold) 70%, var(--gold-dim) 100%);
   background-size: 300% 100%;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   animation: shimmer 8s linear infinite;
 }
-.hero-subtitle { font-family: var(--font-display); font-size: 1.4rem; font-weight: 300; font-style: italic; color: var(--text-secondary); letter-spacing: 0.08em; margin-bottom: 48px; }
-.hero-line { font-size: 1rem; color: var(--text-secondary); max-width: 540px; margin: 0 auto; line-height: 1.8; }
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  margin-top: 24px;
+  text-align: center;
+}
+.hero-line {
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: var(--text-muted);
+  max-width: 500px;
+  text-align: center;
+  line-height: 1.9;
+  margin-top: 48px;
+}
+.hero-scroll-cue {
+  position: absolute; bottom: 40px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  opacity: 0.3;
+  animation: float 3s ease-in-out infinite;
+}
+.hero-scroll-cue span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+}
 
-/* ââ Divider ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.divider { width: 50px; height: 1px; margin: 0 auto; background: linear-gradient(90deg, transparent, var(--gold-primary), transparent); }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
 
-/* ââ Sections âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-section { padding: 100px 40px; }
-.section-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
-.section-heading { font-family: var(--font-display); font-size: 2.6rem; font-weight: 400; color: var(--text-primary); margin-bottom: 20px; }
-.section-body { font-size: 1rem; color: var(--text-secondary); line-height: 1.85; max-width: 640px; }
+/* ââ Reveal Animations ââââââââââââââââââââââââââââââââââââ */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ââ About ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.about-section { max-width: 720px; margin: 0 auto; text-align: center; }
+.reveal-left {
+  opacity: 0; transform: translateX(-80px);
+  transition: opacity 1s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
 
-/* ââ Capabilities âââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.cap-section { max-width: 1100px; margin: 0 auto; text-align: center; }
-.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
-.cap-card { background: rgba(15,30,56,0.35); border: 1px solid rgba(200,168,78,0.06); border-radius: 10px; padding: 36px 28px; text-align: left; transition: all 0.4s; }
-.cap-card:hover { border-color: rgba(200,168,78,0.2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
-.cap-icon { font-size: 1.6rem; margin-bottom: 16px; }
-.cap-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
-.cap-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+.reveal-right {
+  opacity: 0; transform: translateX(80px);
+  transition: opacity 1s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
 
-/* ââ Approach âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.approach-section { max-width: 900px; margin: 0 auto; text-align: center; }
-.approach-cards { display: flex; justify-content: center; gap: 32px; margin-top: 56px; }
-.approach-card { flex: 1; max-width: 260px; padding: 32px 24px; border-radius: 10px; border: 1px solid; text-align: center; }
-.approach-a { border-color: rgba(78,205,196,0.25); background: rgba(78,205,196,0.04); }
-.approach-b { border-color: rgba(200,168,78,0.25); background: rgba(200,168,78,0.04); }
-.approach-c { border-color: rgba(232,93,93,0.2); background: rgba(232,93,93,0.03); }
-.approach-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; margin-bottom: 8px; }
-.approach-a .approach-label { color: var(--accent-teal); }
-.approach-b .approach-label { color: var(--gold-primary); }
-.approach-c .approach-label { color: #e85d5d; }
-.approach-title { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-primary); margin-bottom: 8px; }
-.approach-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+.reveal-scale {
+  opacity: 0; transform: scale(0.85);
+  transition: opacity 1s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
 
-/* ââ Sienna âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-.sienna-section { max-width: 720px; margin: 0 auto; text-align: center; }
-.sienna-portrait { width: 100%; max-width: 380px; border-radius: 16px; border: 2px solid rgba(200,168,78,0.12); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+/* ââ Thesis Section âââââââââââââââââââââââââââââââââââââââ */
+.thesis {
+  padding: 160px 40px;
+  display: flex; flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.thesis::before {
+  content: ''; position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 1px; height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+}
+.thesis-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.thesis-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.15;
+  max-width: 700px;
+}
+.thesis-heading em {
+  font-style: italic;
+  color: var(--gold);
+}
+.thesis-body {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 2;
+  max-width: 560px;
+  text-align: center;
+  margin-top: 40px;
+}
 
-/* ââ Footer âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
-footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); text-align: center; }
-.footer-logo { width: 50px; height: auto; margin-bottom: 16px; opacity: 0.4; }
-.footer-text { font-size: 0.78rem; color: var(--text-muted); }
-.footer-links { margin-top: 10px; }
-.footer-links a { font-size: 0.72rem; color: var(--text-muted); text-decoration: none; margin: 0 14px; transition: color 0.3s; }
-.footer-links a:hover { color: var(--gold-primary); }
+/* ââ Approach Section âââââââââââââââââââââââââââââââââââââ */
+.approach {
+  padding: 140px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.approach-header {
+  text-align: center;
+  margin-bottom: 100px;
+}
+.approach-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.approach-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  color: var(--text);
+}
+.regime-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.regime-card {
+  position: relative;
+  padding: 56px 40px;
+  background: var(--surface);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.regime-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.regime-card:hover::before { transform: scaleX(1); }
+.regime-card:hover { background: var(--surface-elevated); }
 
+.regime-card--favorable::before { background: var(--teal); }
+.regime-card--uncertain::before { background: var(--gold); }
+.regime-card--adverse::before { background: #e85d5d; }
+
+.regime-state {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+}
+.regime-card--favorable .regime-state { color: var(--teal); }
+.regime-card--uncertain .regime-state { color: var(--gold); }
+.regime-card--adverse .regime-state { color: #e85d5d; }
+
+.regime-action {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.regime-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ââ Capabilities âââââââââââââââââââââââââââââââââââââââââ */
+.capabilities {
+  padding: 140px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.cap-header {
+  margin-bottom: 80px;
+}
+.cap-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.cap-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+}
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(200,168,78,0.06);
+}
+.cap-item {
+  background: var(--black);
+  padding: 52px 44px;
+  position: relative;
+  transition: all 0.5s ease;
+}
+.cap-item:hover {
+  background: var(--surface);
+}
+.cap-item::after {
+  content: '';
+  position: absolute; bottom: 0; left: 44px;
+  width: 40px; height: 1px;
+  background: var(--gold-dim);
+  opacity: 0;
+  transition: opacity 0.4s, width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cap-item:hover::after {
+  opacity: 1; width: 60px;
+}
+.cap-number {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.15em;
+  margin-bottom: 20px;
+}
+.cap-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.cap-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ââ Sienna Section âââââââââââââââââââââââââââââââââââââââ */
+.sienna {
+  padding: 180px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.sienna::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px; height: 100px;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+}
+.sienna-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.sienna-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.sienna-heading em {
+  font-style: italic;
+  color: var(--gold);
+}
+.sienna-body {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 2;
+  max-width: 560px;
+  text-align: center;
+}
+
+/* ââ Metrics Ticker âââââââââââââââââââââââââââââââââââââââ */
+.metrics {
+  padding: 80px 40px;
+  border-top: 1px solid rgba(200,168,78,0.06);
+  border-bottom: 1px solid rgba(200,168,78,0.06);
+}
+.metrics-grid {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.metric {
+  text-align: center;
+}
+.metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+/* ââ Contact ââââââââââââââââââââââââââââââââââââââââââââââ */
+.contact {
+  padding: 180px 40px 100px;
+  text-align: center;
+}
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+.contact-body {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0 auto 48px;
+  line-height: 1.8;
+}
+.contact-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  text-decoration: none;
+  padding: 16px 48px;
+  border: 1px solid rgba(200,168,78,0.25);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+.contact-link::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+.contact-link:hover {
+  color: var(--black);
+  border-color: var(--gold);
+}
+.contact-link:hover::before { transform: translateY(0); }
+
+/* ââ Footer âââââââââââââââââââââââââââââââââââââââââââââââ */
+footer {
+  padding: 40px;
+  text-align: center;
+  border-top: 1px solid rgba(200,168,78,0.04);
+}
+.footer-text {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.footer-links {
+  margin-top: 12px;
+}
+.footer-links a {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin: 0 16px;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--gold); }
+
+/* ââ Magnetic Elements ââââââââââââââââââââââââââââââââââââ */
+.magnetic { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ââ Responsive âââââââââââââââââââââââââââââââââââââââââââ */
 @media (max-width: 900px) {
-  .hero-title { font-size: 3rem; }
-  .about-section, .sienna-section { max-width: 100%; }
+  .regime-cards { grid-template-columns: 1fr; }
   .cap-grid { grid-template-columns: 1fr; }
-  .approach-cards { flex-direction: column; align-items: center; }
-  nav { padding: 12px 20px; }
+  .metrics-grid { flex-direction: column; gap: 40px; align-items: center; }
+  nav { padding: 16px 24px; }
   .nav-links { display: none; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
 }
 @media (max-width: 600px) {
-  .hero-title { font-size: 2.2rem; letter-spacing: 0.06em; }
-  .hero-logo-main { width: 140px; }
-  section { padding: 60px 20px; }
+  .hero-title { letter-spacing: 0.08em; }
+  section, .thesis, .approach, .capabilities, .sienna, .contact {
+    padding-left: 24px; padding-right: 24px;
+  }
+  .cap-item { padding: 36px 28px; }
+  .regime-card { padding: 40px 28px; }
 }
 </style>
 </head>
 <body>
 
+<!-- Custom Cursor -->
+<div class="cursor"><div class="cursor-dot"></div></div>
+<div class="cursor-ring"></div>
+
+<!-- Canvas for particles + thread -->
+<canvas id="threadCanvas"></canvas>
+
+<!-- Intro Sequence -->
+<div class="intro-overlay" id="intro">
+  <div style="text-align:center;">
+    <div class="intro-text" id="introText">ARIADNE</div>
+    <div class="intro-subtitle" id="introSub">SOVEREIGN INTELLIGENCE</div>
+  </div>
+</div>
+
 <!-- Navigation -->
-<nav>
-  <a href="#" class="nav-brand">
-    <img src="assets/ariadne-cameo.png" alt="Ariadne" class="nav-logo" onerror="this.style.display='none'">
-    <span class="nav-wordmark">ARIADNE</span>
-  </a>
+<nav id="nav">
+  <a href="#" class="nav-mark magnetic">ARIADNE</a>
   <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="#capabilities">Capabilities</a>
-    <a href="#approach">Approach</a>
-    <a href="#sienna">Sienna</a>
-    <a href="#contact" class="nav-cta">Contact</a>
+    <a href="#thesis" class="magnetic">Thesis</a>
+    <a href="#approach" class="magnetic">Approach</a>
+    <a href="#capabilities" class="magnetic">Build</a>
+    <a href="#sienna" class="magnetic">Sienna</a>
+    <a href="#contact" class="magnetic">Contact</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero" id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <img src="assets/ariadne-cameo.png" alt="Ariadne Sovereign Intelligence" class="hero-logo-main" onerror="this.style.display='none'">
-    <h1 class="hero-title">ARIADNE</h1>
-    <p class="hero-subtitle">Sovereign Intelligence</p>
-    <p class="hero-line">Algorithmic systems that navigate market complexity, build wealth intelligently, and operate with full autonomy.</p>
+  <h1 class="hero-title reveal">ARIADNE</h1>
+  <p class="hero-tagline reveal">Sovereign Intelligence</p>
+  <p class="hero-line reveal">Algorithmic systems that navigate market complexity, build wealth intelligently, and operate with full autonomy.</p>
+  <div class="hero-scroll-cue">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- About -->
-<section id="about">
-  <div class="about-section">
-    <div class="section-label fade-up">About</div>
-    <h2 class="section-heading fade-up">The thread through<br>the labyrinth.</h2>
-    <div class="section-body fade-up" style="margin:0 auto;">
-      <p>In Greek mythology, Ariadne gave Theseus the thread that guided him safely through the labyrinth. Today, Ariadne provides the same clarity through financial complexity.</p>
-      <br>
-      <p>We build intelligent systems that understand market conditions in real time, adapt autonomously, and execute with precision &mdash; so you don&rsquo;t have to.</p>
-    </div>
-  </div>
+<!-- Thesis -->
+<section class="thesis" id="thesis">
+  <div class="thesis-label reveal">The Thread</div>
+  <h2 class="thesis-heading reveal">The thread through<br>the <em>labyrinth</em>.</h2>
+  <p class="thesis-body reveal">In Greek mythology, Ariadne gave Theseus the thread that guided him safely through the labyrinth. Today, Ariadne provides the same clarity through financial complexity.</p>
+  <p class="thesis-body reveal" style="margin-top: 24px;">We build intelligent systems that understand market conditions in real time, adapt autonomously, and execute with precision &mdash; so you don&rsquo;t have to.</p>
 </section>
-
-<div class="divider"></div>
-
-<!-- Capabilities -->
-<section id="capabilities">
-  <div class="cap-section">
-    <div class="section-label">What We Build</div>
-    <h2 class="section-heading">Intelligent systems, end to end.</h2>
-
-    <div class="cap-grid">
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x1F9ED;</div>
-        <div class="cap-title">Market Intelligence</div>
-        <div class="cap-desc">Proprietary systems that read market conditions and adapt in real time. Multiple strategies coordinated through a unified decision framework.</div>
-      </div>
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x2699;&#xFE0F;</div>
-        <div class="cap-title">Autonomous Operations</div>
-        <div class="cap-desc">Fully automated daily workflows &mdash; from morning preparation through market hours to end-of-day analysis. Human oversight without human bottlenecks.</div>
-      </div>
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x1F4CA;</div>
-        <div class="cap-title">Data Fusion</div>
-        <div class="cap-desc">Dozens of independent data streams synthesized into actionable intelligence. Alternative data, macro indicators, and proprietary signals woven together.</div>
-      </div>
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x1F3E0;</div>
-        <div class="cap-title">Wealth Infrastructure</div>
-        <div class="cap-desc">Real estate intelligence, funding discovery, banking integration, and financial planning tools &mdash; all connected to a unified wealth picture.</div>
-      </div>
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x1F6E1;&#xFE0F;</div>
-        <div class="cap-title">Family Protection</div>
-        <div class="cap-desc">Estate planning, trust structures, insurance optimization, credit intelligence, and governance frameworks designed for multi-generational wealth preservation.</div>
-      </div>
-      <div class="cap-card fade-up">
-        <div class="cap-icon">&#x1F310;</div>
-        <div class="cap-title">Distribution & Commerce</div>
-        <div class="cap-desc">Multi-channel content distribution, opportunity scoring, pipeline management, and platform integrations for building revenue at scale.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
 
 <!-- Approach -->
-<section id="approach">
-  <div class="approach-section">
-    <div class="section-label">Our Approach</div>
-    <h2 class="section-heading">Adapt. Don't predict.</h2>
-    <div class="section-body" style="margin:0 auto;">
-      <p>Markets are a labyrinth &mdash; constantly shifting, full of false turns. Ariadne doesn&rsquo;t try to predict the future. It classifies the present with extreme precision and adapts every decision accordingly.</p>
+<section class="approach" id="approach">
+  <div class="approach-header">
+    <div class="approach-label reveal">Methodology</div>
+    <h2 class="approach-heading reveal">Adapt. Don&rsquo;t predict.</h2>
+  </div>
+  <div class="regime-cards">
+    <div class="regime-card regime-card--favorable reveal">
+      <div class="regime-state">FAVORABLE</div>
+      <div class="regime-action">Expand</div>
+      <div class="regime-desc">When conditions align, deploy with conviction. The system allocates aggressively within risk parameters.</div>
     </div>
-
-    <div class="approach-cards">
-      <div class="approach-card approach-a fade-up">
-        <div class="approach-label">FAVORABLE</div>
-        <div class="approach-title">Expand</div>
-        <div class="approach-desc">When conditions align, deploy with conviction. The system allocates aggressively within risk parameters.</div>
-      </div>
-      <div class="approach-card approach-b fade-up">
-        <div class="approach-label">UNCERTAIN</div>
-        <div class="approach-title">Navigate</div>
-        <div class="approach-desc">When signals conflict, deploy selectively. The system reduces exposure and favors market-neutral approaches.</div>
-      </div>
-      <div class="approach-card approach-c fade-up">
-        <div class="approach-label">ADVERSE</div>
-        <div class="approach-title">Protect</div>
-        <div class="approach-desc">When conditions deteriorate, preserve capital. The system pauses directional activity and activates defensive postures.</div>
-      </div>
+    <div class="regime-card regime-card--uncertain reveal">
+      <div class="regime-state">UNCERTAIN</div>
+      <div class="regime-action">Navigate</div>
+      <div class="regime-desc">When signals conflict, deploy selectively. The system reduces exposure and favors market-neutral approaches.</div>
+    </div>
+    <div class="regime-card regime-card--adverse reveal">
+      <div class="regime-state">ADVERSE</div>
+      <div class="regime-action">Protect</div>
+      <div class="regime-desc">When conditions deteriorate, preserve capital. The system pauses directional activity and activates defensive postures.</div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<!-- Capabilities -->
+<section class="capabilities" id="capabilities">
+  <div class="cap-header">
+    <div class="cap-label reveal">What We Build</div>
+    <h2 class="cap-heading reveal">Intelligent systems,<br>end to end.</h2>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-item reveal">
+      <div class="cap-number">01</div>
+      <div class="cap-title">Market Intelligence</div>
+      <div class="cap-desc">Proprietary systems that read market conditions and adapt in real time. Multiple strategies coordinated through a unified decision framework.</div>
+    </div>
+    <div class="cap-item reveal">
+      <div class="cap-number">02</div>
+      <div class="cap-title">Autonomous Operations</div>
+      <div class="cap-desc">Fully automated daily workflows &mdash; from morning preparation through market hours to end-of-day analysis. Human oversight without human bottlenecks.</div>
+    </div>
+    <div class="cap-item reveal">
+      <div class="cap-number">03</div>
+      <div class="cap-title">Data Fusion</div>
+      <div class="cap-desc">Dozens of independent data streams synthesized into actionable intelligence. Alternative data, macro indicators, and proprietary signals woven together.</div>
+    </div>
+    <div class="cap-item reveal">
+      <div class="cap-number">04</div>
+      <div class="cap-title">Wealth Infrastructure</div>
+      <div class="cap-desc">Real estate intelligence, funding discovery, banking integration, and financial planning tools &mdash; all connected to a unified wealth picture.</div>
+    </div>
+    <div class="cap-item reveal">
+      <div class="cap-number">05</div>
+      <div class="cap-title">Family Protection</div>
+      <div class="cap-desc">Estate planning, trust structures, insurance optimization, credit intelligence, and governance frameworks for multi-generational wealth preservation.</div>
+    </div>
+    <div class="cap-item reveal">
+      <div class="cap-number">06</div>
+      <div class="cap-title">Distribution &amp; Commerce</div>
+      <div class="cap-desc">Multi-channel content distribution, opportunity scoring, pipeline management, and platform integrations for building revenue at scale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Metrics -->
+<section class="metrics">
+  <div class="metrics-grid">
+    <div class="metric reveal">
+      <div class="metric-value" data-count="532">0</div>
+      <div class="metric-label">Commands</div>
+    </div>
+    <div class="metric reveal">
+      <div class="metric-value" data-count="25">0</div>
+      <div class="metric-label">Live Feeds</div>
+    </div>
+    <div class="metric reveal">
+      <div class="metric-value" data-count="15">0</div>
+      <div class="metric-label">Layers</div>
+    </div>
+    <div class="metric reveal">
+      <div class="metric-value" data-suffix="min" data-count="15">0</div>
+      <div class="metric-label">Cycle Time</div>
+    </div>
+  </div>
+</section>
 
 <!-- Sienna -->
-<section id="sienna">
-  <div class="sienna-section">
-    <div class="section-label fade-up">Meet Sienna</div>
-    <h2 class="section-heading fade-up">Intelligence with memory.</h2>
-    <div class="section-body fade-up" style="margin:0 auto;">
-      <p>Sienna is the intelligence layer that ties everything together. She observes every data point, remembers what worked and what didn&rsquo;t, and surfaces insights that would take a human analyst hours to uncover.</p>
-      <br>
-      <p>Think of her as a chief of staff who never sleeps, never forgets, and always has the right context ready &mdash; before you ask for it.</p>
-    </div>
-    <div class="fade-up" style="margin-top:40px;">
-      <img src="assets/sienna-portrait.png" alt="Sienna" class="sienna-portrait" onerror="this.style.display='none'">
-    </div>
-  </div>
+<section class="sienna" id="sienna">
+  <div class="sienna-label reveal">Meet Sienna</div>
+  <h2 class="sienna-heading reveal">Intelligence with<br><em>memory</em>.</h2>
+  <p class="sienna-body reveal">Sienna is the intelligence layer that ties everything together. She observes every data point, remembers what worked and what didn&rsquo;t, and surfaces insights that would take a human analyst hours to uncover.</p>
+  <p class="sienna-body reveal" style="margin-top: 24px;">Think of her as a chief of staff who never sleeps, never forgets, and always has the right context ready &mdash; before you ask for it.</p>
 </section>
 
-<div class="divider"></div>
-
 <!-- Contact -->
-<section id="contact" style="text-align:center;">
-  <div class="section-label">Contact</div>
-  <h2 class="section-heading">Let's talk.</h2>
-  <p class="section-body" style="margin:0 auto 32px;">Whether you&rsquo;re interested in our technology, exploring a partnership, or just want to learn more &mdash; we&rsquo;d like to hear from you.</p>
-  <a href="mailto:chris@ariadnesi.org" style="display:inline-block; padding:14px 40px; background:var(--gold-primary); color:var(--navy-deep); font-weight:600; font-size:0.88rem; letter-spacing:0.06em; border-radius:5px; text-decoration:none; transition:all 0.3s;">chris@ariadnesi.org</a>
+<section class="contact" id="contact">
+  <h2 class="contact-heading reveal">Let&rsquo;s talk.</h2>
+  <p class="contact-body reveal">Whether you&rsquo;re interested in our technology, exploring a partnership, or just want to learn more &mdash; we&rsquo;d like to hear from you.</p>
+  <a href="mailto:chris@ariadnesi.org" class="contact-link magnetic reveal">chris@ariadnesi.org</a>
 </section>
 
 <!-- Footer -->
 <footer>
-  <img src="assets/ariadne-cameo.png" alt="" class="footer-logo" onerror="this.style.display='none'">
   <p class="footer-text">&copy; 2026 Ariadne Sovereign Intelligence. All rights reserved.</p>
   <div class="footer-links">
     <a href="https://ariadnesi.org">AriadneSI.org</a>
@@ -311,11 +742,228 @@ footer { padding: 60px 40px 40px; border-top: 1px solid rgba(200,168,78,0.06); t
 </footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+// ââ Intro Sequence ââââââââââââââââââââââââââââââââââââââ
+const intro = document.getElementById('intro');
+const introText = document.getElementById('introText');
+const introSub = document.getElementById('introSub');
+
+setTimeout(() => introText.classList.add('visible'), 200);
+setTimeout(() => introSub.classList.add('visible'), 800);
+setTimeout(() => {
+  intro.classList.add('done');
+  document.getElementById('nav').classList.add('visible');
+}, 2800);
+setTimeout(() => intro.remove(), 4200);
+
+// ââ Custom Cursor âââââââââââââââââââââââââââââââââââââââ
+const cursorDot = document.querySelector('.cursor-dot');
+const cursorRing = document.querySelector('.cursor-ring');
+let mx = 0, my = 0, cx = 0, cy = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  if (cursorDot) cursorDot.parentElement.style.transform = `translate(${mx}px, ${my}px)`;
+});
+
+function animateCursor() {
+  cx += (mx - cx) * 0.12;
+  cy += (my - cy) * 0.12;
+  if (cursorRing) cursorRing.style.transform = `translate(${cx - 20}px, ${cy - 20}px)`;
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Cursor hover effects
+document.querySelectorAll('a, button, .regime-card, .cap-item').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    if (!cursorDot) return;
+    cursorDot.style.width = '14px';
+    cursorDot.style.height = '14px';
+    cursorRing.style.width = '56px';
+    cursorRing.style.height = '56px';
+    cursorRing.style.borderColor = 'rgba(200,168,78,0.5)';
+  });
+  el.addEventListener('mouseleave', () => {
+    if (!cursorDot) return;
+    cursorDot.style.width = '8px';
+    cursorDot.style.height = '8px';
+    cursorRing.style.width = '40px';
+    cursorRing.style.height = '40px';
+    cursorRing.style.borderColor = 'rgba(200,168,78,0.3)';
+  });
+});
+
+// ââ Magnetic Elements âââââââââââââââââââââââââââââââââââ
+document.querySelectorAll('.magnetic').forEach(el => {
+  el.addEventListener('mousemove', e => {
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.2;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.2;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  el.addEventListener('mouseleave', () => {
+    el.style.transform = 'translate(0, 0)';
+  });
+});
+
+// ââ Scroll Reveal âââââââââââââââââââââââââââââââââââââââ
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+  observer.observe(el);
+});
+
+// ââ Counter Animation âââââââââââââââââââââââââââââââââââ
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const current = Math.round(target * eased);
+        el.textContent = current + (suffix ? suffix : '');
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+// ââ Particle Canvas âââââââââââââââââââââââââââââââââââââ
+const canvas = document.getElementById('threadCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+const particles = [];
+const PARTICLE_COUNT = 60;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.15;
+    this.vy = (Math.random() - 0.5) * 0.15;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.alpha = Math.random() * 0.25 + 0.03;
+    this.life = Math.random() * 400 + 200;
+    this.age = 0;
+    this.isGold = Math.random() < 0.3;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.age++;
+    if (this.age > this.life || this.x < -10 || this.x > W + 10 || this.y < -10 || this.y > H + 10) {
+      this.reset();
+    }
+  }
+  draw() {
+    const fade = 1 - Math.abs((this.age / this.life) * 2 - 1);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    if (this.isGold) {
+      ctx.fillStyle = `rgba(200,168,78,${this.alpha * fade})`;
+    } else {
+      ctx.fillStyle = `rgba(200,190,170,${this.alpha * fade * 0.5})`;
+    }
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+// Draw connections between nearby gold particles
+function drawConnections() {
+  const golds = particles.filter(p => p.isGold);
+  for (let i = 0; i < golds.length; i++) {
+    for (let j = i + 1; j < golds.length; j++) {
+      const dx = golds[i].x - golds[j].x;
+      const dy = golds[i].y - golds[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 200) {
+        const alpha = (1 - dist / 200) * 0.04;
+        ctx.beginPath();
+        ctx.moveTo(golds[i].x, golds[i].y);
+        ctx.lineTo(golds[j].x, golds[j].y);
+        ctx.strokeStyle = `rgba(200,168,78,${alpha})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+// Mouse interaction with particles
+let pmx = W / 2, pmy = H / 2;
+document.addEventListener('mousemove', e => { pmx = e.clientX; pmy = e.clientY; });
+
+function animateParticles() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Subtle mouse glow
+  const grd = ctx.createRadialGradient(pmx, pmy, 0, pmx, pmy, 200);
+  grd.addColorStop(0, 'rgba(200,168,78,0.015)');
+  grd.addColorStop(1, 'rgba(200,168,78,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  particles.forEach(p => {
+    // Slight attraction to cursor
+    const dx = pmx - p.x;
+    const dy = pmy - p.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 300 && dist > 1) {
+      p.vx += (dx / dist) * 0.002;
+      p.vy += (dy / dist) * 0.002;
+    }
+    // Damping
+    p.vx *= 0.999;
+    p.vy *= 0.999;
+
+    p.update();
+    p.draw();
+  });
+  drawConnections();
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ââ Nav Background on Scroll ââââââââââââââââââââââââââââ
+window.addEventListener('scroll', () => {
+  const n = document.getElementById('nav');
+  if (window.scrollY > 100) {
+    n.style.background = 'rgba(3,3,3,0.92)';
+    n.style.backdropFilter = 'blur(20px)';
+    n.style.borderBottom = '1px solid rgba(200,168,78,0.06)';
+  } else {
+    n.style.background = 'transparent';
+    n.style.backdropFilter = 'none';
+    n.style.borderBottom = 'none';
+  }
 });
 </script>
 </body>
